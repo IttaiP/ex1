@@ -36,6 +36,7 @@ public class EditTitleActivity extends AppCompatActivity {
     // setup - start from static title with "edit" button
     fabStartEdit.setVisibility(View.VISIBLE);
     fabEditDone.setVisibility(View.GONE);
+    fabEditDone.animate().alpha(0L);
     textViewTitle.setText("Page title here");
     textViewTitle.setVisibility(View.VISIBLE);
     editTextTitle.setText("Page title here");
@@ -55,8 +56,14 @@ public class EditTitleActivity extends AppCompatActivity {
 
       to complete (1.) & (2.), start by just changing visibility. only add animations after everything else is ready
        */
+      isEditing = true;
+      fabStartEdit.animate().
+              setDuration(600L).alpha(0);
+      ;
       fabStartEdit.setVisibility(View.GONE);
       fabEditDone.setVisibility(View.VISIBLE);
+      fabEditDone.animate().
+              setDuration(600L).alpha(1);
       textViewTitle.setVisibility(View.GONE);
       editTextTitle.setVisibility(View.VISIBLE);
       editTextTitle.setText(textViewTitle.getText());
@@ -76,8 +83,14 @@ public class EditTitleActivity extends AppCompatActivity {
 
       to complete (1.) & (2.), start by just changing visibility. only add animations after everything else is ready
        */
-      fabStartEdit.setVisibility(View.VISIBLE);
+      isEditing = false;
+      fabEditDone.animate().
+              setDuration(600L).alpha(0);
+      ;
       fabEditDone.setVisibility(View.GONE);
+      fabStartEdit.setVisibility(View.VISIBLE);
+      fabStartEdit.animate().
+              setDuration(600L).alpha(1);
       textViewTitle.setText(editTextTitle.getText());
       textViewTitle.setVisibility(View.VISIBLE);
       editTextTitle.setVisibility(View.GONE);
@@ -88,6 +101,7 @@ public class EditTitleActivity extends AppCompatActivity {
   public void onBackPressed() {
     // BACK button was clicked
     /*
+
     TODO:
     if user is now editing, tap on BACK will revert the edit. do the following:
     1. hide the edit-text
@@ -102,6 +116,28 @@ public class EditTitleActivity extends AppCompatActivity {
     to work with views, you will need to find them first.
     to find views call `findViewById()` in a same way like in `onCreate()`
      */
-    
+    setContentView(R.layout.activity_edit_title);
+    FloatingActionButton fabStartEdit = findViewById(R.id.fab_start_edit);
+    FloatingActionButton fabEditDone = findViewById(R.id.fab_edit_done);
+    TextView textViewTitle = findViewById(R.id.textViewPageTitle);
+    EditText editTextTitle = findViewById(R.id.editTextPageTitle);
+
+
+    if(isEditing){
+      isEditing = false;
+      fabEditDone.animate().
+              setDuration(600L).alpha(0);
+      ;
+      fabEditDone.setVisibility(View.GONE);
+      fabStartEdit.setVisibility(View.VISIBLE);
+      fabStartEdit.animate().
+              setDuration(600L).alpha(1);
+      editTextTitle.setText(textViewTitle.getText());
+      textViewTitle.setVisibility(View.VISIBLE);
+      editTextTitle.setVisibility(View.GONE);
+    }
+    else {
+      super.onBackPressed();
+    }
   }
 }
